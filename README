@@ -1,0 +1,1 @@
+This repository contains my solutions to the intermediate and advanced problems from the "SQL Practice Problems" book by Sylvia Moestl Vasilik http://www.sqlpracticeproblems.com The book and associated files are intended for MS SQL. I translated the table definitions and data files into MySQL and used it to write out my solutions.
