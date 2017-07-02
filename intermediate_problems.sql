@@ -1,4 +1,4 @@
-use NotrhwindMySQL;
+use NorthwindMySQL;
 
 # 20
 # Categories, and the total products in each category
