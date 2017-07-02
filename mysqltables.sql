@@ -103,10 +103,9 @@ UnitPrice FLOAT DEFAULT 0,
 UnitsInStock SMALLINT DEFAULT 0,
 UnitsOnOrder SMALLINT DEFAULT 0,
 ReorderLevel SMALLINT DEFAULT 0,
--- Discontinued TINYINT DEFAULT =No NOT NULL,    <--- this is uncoool
 Discontinued TINYINT DEFAULT 0 NOT NULL,
-#FOREIGN KEY (CategoryID) REFERENCES Categories (CategoryID),
-#FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID),
+FOREIGN KEY (CategoryID) REFERENCES Categories (CategoryID),
+FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID),
 PRIMARY KEY (ProductID),
 INDEX ProductName (ProductName));
 
