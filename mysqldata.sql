@@ -1,3 +1,5 @@
+use NorthwindMySQL;
+
 INSERT INTO Categories (CategoryID, CategoryName, Description) VALUES (1, N'Beverages', N'Soft drinks, coffees, teas, beers, and ales');
 INSERT INTO Categories (CategoryID, CategoryName, Description) VALUES (2, N'Condiments', N'Sweet and savory sauces, relishes, spreads, and seasonings');
 INSERT INTO Categories (CategoryID, CategoryName, Description) VALUES (3, N'Confections', N'Desserts, candies, and sweet breads');

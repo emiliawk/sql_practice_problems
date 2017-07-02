@@ -47,7 +47,6 @@ Notes TEXT,
 ReportsTo INT,
 PhotoPath VARCHAR(255),
 PRIMARY KEY (EmployeeID),
--- CHECK (<Date()),
 INDEX LastName (LastName));
 
 CREATE TABLE Shippers(
@@ -71,9 +70,9 @@ ShipCity VARCHAR(15),
 ShipRegion VARCHAR(15),
 ShipPostalCode VARCHAR(10),
 ShipCountry VARCHAR(15),
-#FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID),
-#FOREIGN KEY (EmployeeID) REFERENCES Employees (EmployeeID),
-#FOREIGN KEY (ShipVia) REFERENCES Shippers (ShipperID),
+FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID),
+FOREIGN KEY (EmployeeID) REFERENCES Employees (EmployeeID),
+FOREIGN KEY (ShipVia) REFERENCES Shippers (ShipperID),
 PRIMARY KEY (OrderID),
 INDEX OrderDate (OrderDate),
 INDEX ShippedDate (ShippedDate),
@@ -117,8 +116,8 @@ ProductID INT NOT NULL,
 UnitPrice FLOAT DEFAULT 0 NOT NULL,
 Quantity SMALLINT DEFAULT 1 NOT NULL,
 Discount FLOAT DEFAULT 0 NOT NULL,
-#FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
-#FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
+FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
+FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
 PRIMARY KEY (OrderID,ProductID)
 );
 
@@ -127,5 +126,3 @@ CustomerGroupName VARCHAR(20) DEFAULT NULL,
 RangeBottom DECIMAL(16,5) DEFAULT NULL,
 RangeTop DECIMAL(20,5) DEFAULT NULL
 );
-
-SHOW TABLES;
