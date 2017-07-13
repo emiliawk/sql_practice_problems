@@ -266,7 +266,94 @@ left join
 Customers c
 on totals.CustomerID = c.CustomerID;
 
-# 50
-# Customer grouping with percentage
+# 51
+# Customer grouping flexible
+
+select c.CustomerID, c.CompanyName, cast(totals.TotalOrderAmount as decimal(10,2)) as TotalOrderAmount, threshold.CustomerGroupName
+from
+(select o.CustomerID, sum(d.Quantity * d.UnitPrice) as TotalOrderAmount
+from Orders o 
+inner join OrderDetails d 
+on o.OrderID = d.OrderID and year(o.OrderDate) = 2016
+group by o.CustomerID) totals
+left join
+Customers c
+on totals.CustomerID = c.CustomerID
+left join
+CustomerGroupThresholds threshold
+on totals.TotalOrderAmount >= threshold.RangeBottom and totals.TotalOrderAmount < threshold.RangeTop
+order by c.CustomerID;
+
+# 52
+# Countries with suppliers or customers
+
+select distinct c.Country from Customers c
+union
+select distinct s.Country from Suppliers s
+order by Country;
+
+# 53
+# Countries with suppliers or customers, version 2
+
+# simulating an outer join in MySQL with the list of countries from the previous problem
+select supplier.Country as SupplierCountry, customer.Country as CustomerCountry 
+from 
+# list of all countries from both tables 
+(select distinct c.Country from Customers c
+union
+select distinct s.Country from Suppliers s
+order by Country) allCountries
+left join
+# countries in Suppliers table
+(select distinct s.Country from Suppliers s) supplier
+on allCountries.Country = supplier.Country
+left join
+# countries in Customers table
+(select distinct c.Country from Customers c) customer
+on allCountries.Country = customer.Country;
+
+# 54
+# Countries with suppliers or customers, version 3
+
+select 
+allCountries.Country, 
+ifnull(supplier.TotalSuppliers, 0) as TotalSuppliers, 
+ifnull(customer.TotalCustomers, 0) as TotalCustomers
+from 
+# list of countries from both tables 
+(select distinct c.Country from Customers c
+union
+select distinct s.Country from Suppliers s
+order by Country) allCountries
+left join
+# suppliers count
+(select s.Country, count(*) as TotalSuppliers from Suppliers s group by s.Country) supplier
+on allCountries.Country = supplier.Country
+left join
+# customers count
+(select distinct c.Country, count(*) as TotalCustomers from Customers c group by c.Country) customer
+on allCountries.Country = customer.Country;
+
+# 55
+# First order in each country
+
+# my way of handling the groupwise minimum/maximum problem in MySQL
+drop table if exists FirstOrders;
+create temporary table FirstOrders (
+ShipCountry VARCHAR(15),
+CustomerID VARCHAR(5),
+OrderID INT NOT NULL,
+OrderDate DATE,
+PRIMARY KEY (ShipCountry)
+);
+
+insert ignore into FirstOrders
+select o.ShipCountry, o.CustomerID, o.OrderID, date(o.OrderDate) from Orders o order by o.ShipCountry, o.OrderID;
+
+select * from FirstOrders;
+
+
+
+
 
 
