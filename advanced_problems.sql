@@ -337,7 +337,8 @@ on allCountries.Country = customer.Country;
 # 55
 # First order in each country
 
-# my way of handling the groupwise minimum/maximum problem in MySQL
+# one way of handling the groupwise minimum/maximum problem in MySQL
+# create a temporary table and insert ignore on ShipCountry as primary key
 drop table if exists FirstOrders;
 create temporary table FirstOrders (
 ShipCountry VARCHAR(15),
@@ -352,8 +353,28 @@ select o.ShipCountry, o.CustomerID, o.OrderID, date(o.OrderDate) from Orders o o
 
 select * from FirstOrders;
 
-
-
-
+# another way to get the result without creating a temporary table
+select 
+ranked.ShipCountry,
+ranked.CustomerID,
+ranked.OrderID,
+date(ranked.OrderDate) as OrderDate
+from
+(select
+# create a computed column that shows the row number for each order partitioned by country
+( 
+  case o.ShipCountry
+  when @curType 
+  then @curRow := @curRow + 1 
+  else @curRow := 1 and @curType := o.ShipCountry end
+) + 1 as rank,
+o.ShipCountry,
+o.CustomerID,
+o.OrderID,
+o.OrderDate
+from Orders o, (select @curRow := 0, @curType := '') r
+order by o.ShipCountry, o.OrderID) ranked
+where ranked.rank = 1
+order by ranked.ShipCountry;
 
 
