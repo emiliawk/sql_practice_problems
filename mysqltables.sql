@@ -10,7 +10,7 @@ PRIMARY KEY (CategoryID),
 UNIQUE CategoryName (CategoryName));
 
 CREATE TABLE Customers(
-CustomerID CHAR(5) NOT NULL,
+CustomerID VARCHAR(5) NOT NULL,
 CompanyName VARCHAR(40) NOT NULL,
 ContactName VARCHAR(30),
 ContactTitle VARCHAR(30),
